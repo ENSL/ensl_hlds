@@ -39,10 +39,16 @@ RUN unzip ns_dedicated_server_v32.zip
 RUN echo 70 > ns/steam_appid.txt
 RUN mv ns/dlls/ns_i386.so ns/dlls/ns.so
 
+# Copy own configs including bans
+ADD cfg/ /home/steam/hlds/ns/
+
+# Use seperate server.cfg because autoexec.cfg is unreliable
+RUN touch /home/steam/hlds/ns/server.cfg
+
 # VAC, HLDS, RCON, HLTV
 EXPOSE 26900
 EXPOSE 27015/udp
 EXPOSE 27015
 EXPOSE 27020
 
-ENTRYPOINT ["./hlds_run", "-game ns", "+maxplayers 32", "+log on"]
+ENTRYPOINT ["./hlds_run", "-game ns", "+maxplayers 32", "+log on", "+map ns_veil", "+exec ns/server.cfg"]
