@@ -21,10 +21,11 @@ build: Dockerfile
 	docker build -t $(IMAGE) .
 
 run: build
-	docker run -ti $(IMAGE)
+	mkdir -p logs
+	docker run -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
 
-shell: build
-	docker run -u0 -ti $(IMAGE) -v $(shell pwd)/logs:/home/steam/hlds/ns/logs /bin/bash
+shell:
+	docker exec -u0 -ti $(IMAGE) -v /bin/bash
 
 pull:
 	docker pull $(IMAGE) || true
@@ -33,6 +34,5 @@ push:
 	docker push $(IMAGE)
 
 clean:
-	rm -f $(shell pwd)/logs/*
 	docker ps -a | awk '{ print $$1,$$2 }' | grep $(IMAGE) |awk '{print $$1 }' |xargs -I {} docker rm {}
 	docker images -a |grep $(IMAGE) |awk '{print $$3}' |xargs -I {} docker rmi {}

@@ -2,7 +2,7 @@ FROM ubuntu
 
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3 unzip
+    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3 unzip liblz4-tool
 
 RUN printf "\n2\n"|apt-get install -y steamcmd
 
@@ -40,10 +40,12 @@ RUN echo 70 > ns/steam_appid.txt
 RUN mv ns/dlls/ns_i386.so ns/dlls/ns.so
 
 # Copy own configs including bans
-ADD cfg/ /home/steam/hlds/ns/
+ADD --chown=steam cfg/ /home/steam/hlds/ns/
 
 # Use seperate server.cfg because autoexec.cfg is unreliable
 RUN touch /home/steam/hlds/ns/server.cfg
+
+COPY entry.sh /home/steam/hlds
 
 # VAC, HLDS, RCON, HLTV
 EXPOSE 26900
@@ -51,4 +53,4 @@ EXPOSE 27015/udp
 EXPOSE 27015
 EXPOSE 27020
 
-ENTRYPOINT ["./hlds_run", "-game ns", "+maxplayers 32", "+log on", "+map ns_veil", "+exec ns/server.cfg"]
+ENTRYPOINT ["./entry.sh"]
