@@ -22,7 +22,8 @@ build: Dockerfile
 
 run: build
 	mkdir -p logs
-	docker run -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+	#docker run -p 27015:27015 27015/udp:27015/udp -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+	docker run --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
 
 shell:
 	docker exec -u0 -ti $(IMAGE) -v /bin/bash
