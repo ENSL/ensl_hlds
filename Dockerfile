@@ -47,10 +47,18 @@ RUN touch /home/steam/hlds/ns/server.cfg
 
 COPY entry.sh /home/steam/hlds
 
+USER root
+RUN apt-get update && apt-get install -y libcurl3 libcurl3:i386 gcc-multilib g++-multilib
+USER steam
+
+WORKDIR /home/steam/hlds
+RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.3/ensl_srvpkg-v1.3.zip -O srv.zip
+RUN unzip srv.zip
+
 # VAC, HLDS, RCON, HLTV
 EXPOSE 26900
-EXPOSE 27015/udp
-EXPOSE 27015
+EXPOSE 27016/udp
+EXPOSE 27016
 EXPOSE 27020
 
 ENTRYPOINT ["./entry.sh"]

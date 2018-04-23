@@ -2,7 +2,7 @@ REGISTRY ?= ensl
 PROJECT  ?= ensl_hlds
 TAG      ?= latest
 
-.PHONY: all clean build
+.PHONY: all clean build stop
 
 ifdef REGISTRY
   IMAGE=$(REGISTRY)/$(PROJECT):$(TAG)
@@ -23,10 +23,15 @@ build: Dockerfile
 run: build
 	mkdir -p logs
 	#docker run -p 27015:27015 27015/udp:27015/udp -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
-	docker run --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+
+stop:
+	docker stop $(PROJECT)
+	docker rm $(PROJECT)
 
 shell:
-	docker exec -u0 -ti $(IMAGE) -v /bin/bash
+	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -u0 -ti $(IMAGE) /bin/bash
+#	docker exec -u0 -ti $(IMAGE) -v /bin/bash
 
 pull:
 	docker pull $(IMAGE) || true
