@@ -53,8 +53,11 @@ RUN touch /home/steam/hlds/ns/server.cfg
 # Copy own configs including bans
 ADD overlay /home/steam/hlds/ns/
 COPY entry.sh /home/steam/hlds
+
+USER root
 RUN chown -R steam:steam /home/steam
 
+USER steam
 WORKDIR /home/steam/hlds
 
 # VAC, HLDS, RCON, HLTV
