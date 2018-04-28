@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 import rHLDS, yaml, re, time, os, argparse
-from bokeh.plotting import figure, output_file, show
 from datetime import datetime
+
+from bokeh.plotting import figure, output_file, show
+#from bokeh.charts import Area, show, output_file, defaults
+#from bokeh.layouts import row
+
+#defaults.width = 1024
+#defaults.height = 1024
 
 def write_data(filename):
 	# Default port 27015
@@ -39,14 +45,14 @@ def read_data(filename):
 		if fps and time:
 			print('time: ' + time)
 			print('fps: ' + fps)
-			fps_time.append(datetime.fromtimestamp(int(time)/1000))
+			fps_time.append(datetime.fromtimestamp(int(time)))
 			fps_data.append(fps)
 
 	# output to static HTML file
 	output_file("%s.html" % filename)
 
 	# create a new plot with a title and axis labels
-	p = figure(title="hlds_linux stats", x_axis_label='time', y_axis_label='FPS')
+	p = figure(title="hlds_linux stats", x_axis_label='time', y_axis_label='FPS', x_axis_type="datetime", width=1600)
 
 	# add a line renderer with legend and line thickness
 	p.line(fps_time, fps_data, legend="FPS", line_width=2)
