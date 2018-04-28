@@ -15,3 +15,4 @@ if [ -z $ROTATE_LOGS ]; then
 fi
 
 ./hlds_run -game ns +maxplayers 32 +log on +map ns_veil +exec ns/server.cfg
+bash

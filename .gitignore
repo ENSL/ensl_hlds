@@ -1,2 +1,4 @@
-cfg/*.*
+overlay/*
+!overlay/.placeholder
 logs
+scripts/data*

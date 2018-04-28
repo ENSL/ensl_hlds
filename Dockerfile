@@ -2,8 +2,9 @@ FROM ubuntu
 
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3 unzip liblz4-tool
+    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3 unzip liblz4-tool libcurl3:i386 gcc-multilib g++-multilib
 
+# Accept ToS
 RUN printf "\n2\n"|apt-get install -y steamcmd
 
 RUN useradd -m steam
@@ -29,31 +30,32 @@ RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/
 
 WORKDIR /home/steam/hlds
 
+# Install NS
 RUN wget 'https://www.ensl.org/files/server/ns_dedicated_server_v32.zip'
 COPY --chown=steam files/ns.sha /home/steam/hlds
 # RUN sha256sum -c ns.sha
-
 RUN unzip ns_dedicated_server_v32.zip
 
-# NS workaround
-RUN echo 70 > ns/steam_appid.txt
-RUN mv ns/dlls/ns_i386.so ns/dlls/ns.so
+WORKDIR /home/steam/hlds/ns
 
-# Copy own configs including bans
-ADD --chown=steam cfg/ /home/steam/hlds/ns/
+# NS workarounds
+RUN echo 70 > steam_appid.txt
+RUN mv dlls/ns_i386.so dlls/ns.so
+
+# ENSL package
+RUN cp liblist.gam liblist.bak
+RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.4/ensl_srvpkg-v1.4.zip -O srv.zip
+RUN unzip -o srv.zip
 
 # Use seperate server.cfg because autoexec.cfg is unreliable
 RUN touch /home/steam/hlds/ns/server.cfg
 
+# Copy own configs including bans
+ADD overlay /home/steam/hlds/ns/
 COPY entry.sh /home/steam/hlds
-
-USER root
-RUN apt-get update && apt-get install -y libcurl3 libcurl3:i386 gcc-multilib g++-multilib
-USER steam
+RUN chown -R steam:steam /home/steam
 
 WORKDIR /home/steam/hlds
-RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.3/ensl_srvpkg-v1.3.zip -O srv.zip
-RUN unzip srv.zip
 
 # VAC, HLDS, RCON, HLTV
 EXPOSE 26900
