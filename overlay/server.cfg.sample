@@ -1,0 +1,51 @@
+// General settings
+
+hostname "Natural Selection v3.2.1b"
+mp_autoconcede 4
+mp_blockscripts 0
+mp_combattime 15
+mp_consistency 1
+mp_countdowntime .2
+mp_drawdamage 0
+mp_falldamage 1
+mp_flashlight 1
+mp_footsteps 1
+mp_friendlyfire 1
+mp_killdelay 3
+mp_latejointime 1.5
+mp_limitteams 1
+mp_logdetail 0
+mp_mapvoteratio .6
+mp_minvotesneeded 3
+mp_serverops ""
+mp_team1damagepercent 100
+mp_team2damagepercent 100
+mp_timelimit 0
+mp_tournamentmode 1
+mp_uplink 1
+mp_votecasttime 2
+mp_votedowntime 90
+mp_votepercentneeded .55
+pausable 0
+rcon_password "cbfkgRSK0RrvJzQ"
+sv_aim 0
+sv_allowdownload 1
+sv_cheats 0
+sv_clienttrace 3.5
+sv_downloadurl "http://www.ensl.org/files/preload"
+sv_lan 0
+sv_maxrate 25000
+sv_maxspectatorspeed 1000
+sv_maxspeed 4000
+sv_maxupdaterate 150
+sv_minrate 10000
+sv_minupdaterate 40
+sv_proxies 5
+sv_password ""
+sv_region 3
+sv_voicecodec voice_speex
+sv_voicequality 5
+violence_agibs 0
+violence_hgibs 0
+# ensl_membersonly 1
+mapchangecfgfile "server.cfg"

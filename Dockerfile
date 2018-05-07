@@ -46,12 +46,12 @@ RUN echo 70 > steam_appid.txt
 RUN mv dlls/ns_i386.so dlls/ns.so
 
 # Patch NS
-RUN wget 'https://github.com/ENSL/NS/releases/download/v3.2.1b/ns_v321a_patch.zip' && unzip -o ns_v321a_patch.zip
+RUN wget 'https://github.com/ENSL/NS/releases/download/v3.2.1b/ns_v321b_patch.zip' && unzip -o ns_v321b_patch.zip
 
 # ENSL package
 RUN cp liblist.gam liblist.bak
 # RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.4/ensl_srvpkg-v1.4.zip -O srv.zip
-RUN echo && wget https://github.com/ENSL/ensl-plugin/releases/download/1.4-extra/ENSL_SrvPkg-1.4-extra.zip -O srv.zip
+RUN wget https://github.com/ENSL/ensl-plugin/releases/download/1.4-extra/ENSL_SrvPkg-1.4-extra.zip -O srv.zip
 RUN unzip -o srv.zip
 
 # Use seperate server.cfg because autoexec.cfg is unreliable
