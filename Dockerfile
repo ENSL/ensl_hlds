@@ -2,7 +2,7 @@ FROM ubuntu
 
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
-    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3 unzip liblz4-tool libcurl3:i386 gcc-multilib g++-multilib
+    apt-get -y install wget lib32gcc1 lib32stdc++6 libcurl3:i386 unzip liblz4-tool gcc-multilib g++-multilib
 
 # Accept ToS
 RUN printf "\n2\n"|apt-get install -y steamcmd
@@ -30,6 +30,9 @@ RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/
 
 WORKDIR /home/steam/hlds
 
+# NS bug workaround. Since NS links to a GCC which is not included in the steam-provided libstdc++:i386
+RUN mv libstdc++* /home/steam/
+
 # Install NS
 RUN wget 'https://www.ensl.org/files/server/ns_dedicated_server_v32.zip'
 COPY --chown=steam files/ns.sha /home/steam/hlds
@@ -42,9 +45,13 @@ WORKDIR /home/steam/hlds/ns
 RUN echo 70 > steam_appid.txt
 RUN mv dlls/ns_i386.so dlls/ns.so
 
+# Patch NS
+RUN wget 'https://github.com/ENSL/NS/releases/download/v3.2.1b/ns_v321a_patch.zip' && unzip -o ns_v321a_patch.zip
+
 # ENSL package
 RUN cp liblist.gam liblist.bak
-RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.4/ensl_srvpkg-v1.4.zip -O srv.zip
+# RUN wget https://github.com/ENSL/ensl-plugin/releases/download/v1.4/ensl_srvpkg-v1.4.zip -O srv.zip
+RUN echo && wget https://github.com/ENSL/ensl-plugin/releases/download/1.4-extra/ENSL_SrvPkg-1.4-extra.zip -O srv.zip
 RUN unzip -o srv.zip
 
 # Use seperate server.cfg because autoexec.cfg is unreliable
@@ -52,12 +59,13 @@ RUN touch /home/steam/hlds/ns/server.cfg
 
 # Copy own configs including bans
 ADD overlay /home/steam/hlds/ns/
-COPY entry.sh /home/steam/hlds
+COPY scripts/*.sh /home/steam/hlds/
 
 USER root
-RUN chown -R steam:steam /home/steam
-
+RUN chown -R steam /home/steam/hlds
+RUN apt-get install -y libstdc++6:i386
 USER steam
+
 WORKDIR /home/steam/hlds
 
 # VAC, HLDS, RCON, HLTV
@@ -66,4 +74,5 @@ EXPOSE 27016/udp
 EXPOSE 27016
 EXPOSE 27020
 
-ENTRYPOINT ["./entry.sh"]
+#ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/home/steam/hlds/entry.sh"]

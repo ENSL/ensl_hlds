@@ -1,4 +1,7 @@
 overlay/*
 !overlay/.placeholder
-logs
+logs/
+!logs/.placeholder
+demos/
+!logs/.placeholder
 scripts/data*

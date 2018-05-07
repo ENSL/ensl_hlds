@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  hlds:
+    image: ensl/ensl_hlds:latest
+    volumes:
+     - "./logs:/home/steam/hlds/ns/logs"
+    network_mode: "host"
+    environment:
+     - HLDS=1
+  hltv:
+    image: ensl/ensl_hlds:latest
+    volumes:
+     - "./demos:/home/steam/hlds/ns/demos"
+    network_mode: "host"
+    environment:
+     - HLTV=1
+  cleaner:
+    image: ensl/ensl_hlds:latest
+    volumes:
+     - "./demos:/home/steam/hlds/ns/demos"
+     - "./logs:/home/steam/hlds/ns/logs"
+    environment:
+     - HLDS_ROTATE=1
+     - HLTV_ROTATE=1
