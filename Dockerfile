@@ -34,19 +34,16 @@ WORKDIR /home/steam/hlds
 RUN mv libstdc++* /home/steam/
 
 # Install NS
-RUN wget 'https://www.ensl.org/files/server/ns_dedicated_server_v32.zip'
+RUN wget 'https://github.com/ENSL/NS/releases/download/v3.2.2/ns_v322_full.zip'
 COPY --chown=steam files/ns.sha /home/steam/hlds
 # RUN sha256sum -c ns.sha
-RUN unzip ns_dedicated_server_v32.zip
+RUN unzip ns_v322_full.zip
 
 WORKDIR /home/steam/hlds/ns
 
 # NS workarounds
 RUN echo 70 > steam_appid.txt
-RUN mv dlls/ns_i386.so dlls/ns.so
-
-# Patch NS
-RUN wget 'https://github.com/ENSL/NS/releases/download/v3.2.1b/ns_v321b_patch.zip' && unzip -o ns_v321b_patch.zip
+# RUN mv dlls/ns_i386.so dlls/ns.so || echo
 
 # ENSL package
 RUN cp liblist.gam liblist.bak

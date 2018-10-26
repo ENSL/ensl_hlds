@@ -2,7 +2,7 @@ REGISTRY ?= ensl
 PROJECT  ?= ensl_hlds
 TAG      ?= latest
 
-.PHONY: all clean build stop
+.PHONY: all clean build stop run pull push
 
 ifdef REGISTRY
   IMAGE=$(REGISTRY)/$(PROJECT):$(TAG)
@@ -23,16 +23,16 @@ build: Dockerfile
 run: build
 	mkdir -p logs
 	#docker run -p 27015:27015 27015/udp:27015/udp -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
-	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
-#	docker run -e HLDS='1' --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+#	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
+	docker run -e HLDS='1' --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -ti $(IMAGE)
 
 stop:
 	docker stop $(PROJECT)
 	docker rm $(PROJECT)
 
 shell:
-	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -u0 -ti $(IMAGE) /bin/bash
-#	docker exec -u0 -ti $(IMAGE) -v /bin/bash
+	docker exec -u0 -ti $(PROJECT) /bin/bash
+#	docker run --name=$(PROJECT) --net=host -v $(shell pwd)/logs:/home/steam/hlds/ns/logs -u0 -ti $(IMAGE) /bin/bash
 
 pull:
 	docker pull $(IMAGE) || true
