@@ -15,15 +15,15 @@ WORKDIR /home/steam
 RUN mkdir -p /home/steam/hlds/steamapps/
 
 # Run app validate several times workaround HLDS bug
-RUN /usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate +app_update 90 +quit
+RUN /usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate +app_update 90 +quit ||true
 
 # HLDS bug workaround. Whee.
 COPY --chown=steam files/*.acf /home/steam/hlds/steamapps/
 
 # HLDS bug workaround. Geez. 
-RUN printf "quit\nquit\n"|/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate || echo
-RUN printf "quit\nquit\n"|/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate || echo
-RUN printf "quit\nquit\nquit\nquit\nquit\n" |/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate || echo
+RUN printf "quit\nquit\n"|/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate ||true
+RUN printf "quit\nquit\n"|/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate ||true
+RUN printf "quit\nquit\nquit\nquit\nquit\n" |/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate ||true
 
 # HLDS bug workaround. Yay.
 RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/.steam/sdk32/steamclient.so
@@ -71,5 +71,5 @@ EXPOSE 27016/udp
 EXPOSE 27016
 EXPOSE 27020
 
-#ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/bash"]
 ENTRYPOINT ["/home/steam/hlds/entry.sh"]
