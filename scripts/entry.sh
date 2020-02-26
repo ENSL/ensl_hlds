@@ -19,7 +19,7 @@ fi
 if [[ "$HLTV" = "1" ]]; then
   echo "Starting HLTV"
   export LD_LIBRARY_PATH=.
-  ./hltv +serverpassword europe +connect localhost:27015 +record demos/gathers >> /home/steam/hlds/ns/demos/hltv-`date +%F-%h:%m`.log
+  ./hltv +serverpassword europe +connect host.docker.internal:27015 +record demos/gathers >> /home/steam/hlds/ns/demos/hltv-`date +%F-%h:%m`.log
 elif [[ "$HLDS" = "1" ]]; then
   echo "Starting HLDS"
   export LD_LIBRARY_PATH=.
