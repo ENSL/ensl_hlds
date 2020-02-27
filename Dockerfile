@@ -65,10 +65,16 @@ USER steam
 
 WORKDIR /home/steam/hlds
 
-# VAC, HLDS, RCON, HLTV
+# VAC Service
 EXPOSE 26900
-EXPOSE 27016/udp
+
+# HLDS 
 EXPOSE 27016
+
+# HLDS RCON
+EXPOSE 27016/udp
+
+# HLTV
 EXPOSE 27020
 
 # ENTRYPOINT ["/bin/bash"]
