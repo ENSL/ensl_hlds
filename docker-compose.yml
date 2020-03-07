@@ -1,25 +1,39 @@
-version: "2"
+version: "3.0"
 
 services:
   hlds:
     image: ensl/ensl_hlds:latest
     volumes:
-     - "./logs:/home/steam/hlds/ns/logs"
-    network_mode: "host"
+      - "./logs:/home/steam/hlds/ns/logs"
+    network_mode: "ensl_hlds_default"
+    ports:
+      - 26900:26900
+      - 27016:27016/udp
+      - 27016:27016
     environment:
-     - HLDS=1
+      - HLDS=1
+
   hltv:
     image: ensl/ensl_hlds:latest
     volumes:
-     - "./demos:/home/steam/hlds/ns/demos"
-    network_mode: "host"
+      - "./demos:/home/steam/hlds/ns/demos"
+    network_mode: "ensl_hlds_default"
+    depends_on:
+      - hlds
+    ports:
+      - 27020:27020
     environment:
-     - HLTV=1
+      - HLTV=1
+
   cleaner:
     image: ensl/ensl_hlds:latest
     volumes:
-     - "./demos:/home/steam/hlds/ns/demos"
-     - "./logs:/home/steam/hlds/ns/logs"
+      - "./demos:/home/steam/hlds/ns/demos"
+      - "./logs:/home/steam/hlds/ns/logs"
+    network_mode: "ensl_hlds_default"
+    depends_on: 
+      - hlds
+      - hltv
     environment:
-     - HLDS_ROTATE=1
-     - HLTV_ROTATE=1
+      - HLDS_ROTATE=1
+      - HLTV_ROTATE=1
