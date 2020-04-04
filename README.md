@@ -1,5 +1,7 @@
 # ENSL HLDS Dockerfile.
 
+This repo is totally Work In Progress. I just dumped it here so others can benefit. Will be polished some beatiful day.
+
 How to use:
 * `make build` to build Docker image
 * `make run` to start NS1 server at default port on localhost
