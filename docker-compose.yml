@@ -3,37 +3,55 @@ version: "3.0"
 services:
   hlds:
     image: ensl/ensl_hlds:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: "ensl_hlds"
+    # user: "${UID}:${GID}"
     volumes:
       - "./logs:/home/steam/hlds/ns/logs"
-    network_mode: "ensl_hlds_default"
     ports:
       - 26900:26900
-      - 27016:27016/udp
       - 27016:27016
+      - 27016:27016/udp
     environment:
       - HLDS=1
+    env_file:
+      - '.env.default'
 
   hltv:
     image: ensl/ensl_hlds:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: "ensl_hltv"
+    # user: "${UID}:${GID}"
     volumes:
       - "./demos:/home/steam/hlds/ns/demos"
-    network_mode: "ensl_hlds_default"
     depends_on:
       - hlds
     ports:
       - 27020:27020
     environment:
       - HLTV=1
+    env_file: 
+      - '.env.default'
 
   cleaner:
     image: ensl/ensl_hlds:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: "ensl_cleaner"
+    # user: "${UID}:${GID}"
     volumes:
       - "./demos:/home/steam/hlds/ns/demos"
       - "./logs:/home/steam/hlds/ns/logs"
-    network_mode: "ensl_hlds_default"
     depends_on: 
       - hlds
       - hltv
     environment:
       - HLDS_ROTATE=1
       - HLTV_ROTATE=1
+    env_file: 
+      - '.env.default'

@@ -17,14 +17,19 @@ if [[ "$HLTV_ROTATE" = "1" ]]; then
 fi
 
 if [[ "$HLTV" = "1" ]]; then
-  echo "Starting HLTV localhost:27016"
+  echo "Starting HLTV"
+  sleep 10
   export LD_LIBRARY_PATH=.
-  ./hltv +serverpassword europe +connect localhost:27016 +record demos/gathers >> /home/steam/hlds/ns/demos/hltv-`date +%F-%h:%m`.log
+  set -o xtrace
+  ./hltv $HLTV_OPTS >> /home/steam/hltv-`date +%F-%h:%m`.log
+  set +o xtrace
   echo "Started"
 elif [[ "$HLDS" = "1" ]]; then
-  echo "Starting HLDS -port 27016"
+  echo "Starting HLDS"
+  set -o xtrace
   export LD_LIBRARY_PATH=.
-  ./hlds_run -game ns +maxplayers 32 +log on +map ns_veil +exec ns/server.cfg -port 27016 -pingboost 3 +sys_ticrate 1000
+  ./hlds_run $HLDS_OPTS
+  set +o xtrace
   echo "Started"
 fi
 
