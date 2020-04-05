@@ -1,6 +1,6 @@
 // General settings
 
-hostname "Natural Selection v3.2.1b"
+hostname "Natural Selection v3.2.2"
 mp_autoconcede 4
 mp_blockscripts 0
 mp_combattime 15
