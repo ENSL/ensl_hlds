@@ -3,6 +3,8 @@ version: "3.0"
 services:
   hlds:
     image: ensl/ensl_hlds:latest
+    tty: true
+    stdin_open: true
     build:
       context: ./
       dockerfile: Dockerfile
@@ -55,3 +57,5 @@ services:
       - HLTV_ROTATE=1
     env_file: 
       - '.env.default'
+  testlog:
+    image: ruby:2.6.5
