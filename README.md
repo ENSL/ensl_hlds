@@ -35,6 +35,11 @@ This repo is totally Work In Progress. I just put it here so others can benefit.
 
 1. ~~You can enable FPS record with HLDS_RECORD_FPS=1 in `.env`~~
 
+## Support
+
+You can ask for help in Discord: https://discord.gg/ZUSSBUA
+Or send me email.
+
 ## Features
 
 * Basically installs HLDS + NS1 server + ENSL Plugin.
