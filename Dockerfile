@@ -8,7 +8,7 @@ RUN dpkg --add-architecture i386 && \
     lib32gcc1 \
     lib32stdc++6 \
     libstdc++6:i386 \
-    libcurl3:i386 \
+    libcurl3-gnutls:i386 \
     gcc-multilib \
     g++-multilib \
     unzip \
