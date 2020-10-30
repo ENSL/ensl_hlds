@@ -1,4 +1,4 @@
-FROM ubuntu AS Ubuntu_SteamCMD
+FROM ubuntu:xenial AS Ubuntu_SteamCMD
 
 # Get Package Dependencies, Accept ToS with Steam Dependency, clear appt cache
 RUN dpkg --add-architecture i386 && \
