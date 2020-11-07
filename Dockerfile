@@ -40,7 +40,8 @@ RUN printf "quit\nquit\n"|/usr/games/steamcmd +login anonymous +force_install_di
     printf "quit\nquit\nquit\nquit\nquit\n" |/usr/games/steamcmd +login anonymous +force_install_dir /home/steam/hlds +app_set_config 90 mod valve +app_update 90 validate ||true
 
 # HLDS bug workaround. Yay.
-RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/.steam/sdk32/steamclient.so
+RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/.steam/sdk32/steamclient.so && \
+    rm -f ~/hlds/libstdc*.so
 
 COPY scripts/*.sh /home/steam/hlds/
 
