@@ -1,4 +1,4 @@
-FROM ubuntu:xenial AS Ubuntu_SteamCMD
+FROM ubuntu:xenial AS ubuntu_steamcmd
 
 # Get Package Dependencies, Accept ToS with Steam Dependency, clear appt cache
 RUN dpkg --add-architecture i386 && \
@@ -24,7 +24,7 @@ RUN useradd -m steam
 USER steam
 WORKDIR /home/steam
 
-FROM Ubuntu_SteamCMD AS SteamCMD_HLDS
+FROM ubuntu_steamcmd AS steamcmd_hlds
 
 RUN mkdir -p /home/steam/hlds/steamapps/
 
@@ -45,7 +45,7 @@ RUN mkdir -p ~/.steam/sdk32 && ln -s ~/.steam/steamcmd/linux32/steamclient.so ~/
 
 COPY scripts/*.sh /home/steam/hlds/
 
-FROM SteamCMD_HLDS AS HLDS_NS
+FROM steamcmd_hlds AS hlds_ns
 
 ARG NS_URL='https://github.com/ENSL/NS/releases/download/v3.2.2/ns_v322_full.zip'
 
@@ -60,7 +60,7 @@ RUN mv /home/steam/hlds/libstdc++* /home/steam/ && \
     unzip ns_*.zip && \
     cp /home/steam/hlds/ns/liblist.gam /home/steam/hlds/ns/liblist.bak
 
-FROM HLDS_NS AS HLDS_ENSL
+FROM hlds_ns AS hlds_ensl
 
 ARG PLUGIN_URL='https://github.com/ENSL/ensl-plugin/releases/download/1.4-extra/ENSL_SrvPkg-1.4-extra.zip'
 
